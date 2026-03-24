@@ -11,6 +11,8 @@ bee.pos=200, 200
 flower=Actor("flower")
 flower.pos=100, 100
 
+frame=0
+
 def update():
     global score
 
@@ -35,24 +37,29 @@ def place_flower():
     flower.x=randint(70, height-50)
     flower.y=randint(70, height-50)
 
+timer=0
+
 def time_up():
     global game_over
     game_over = True
 
-timer=0
-
 def draw():
-    global timer
+    global frame,timer
     screen.blit('background', (0,0))
     flower.draw()
     bee.draw()
     screen.draw.text('SCORE: '+str(score), color="black", midtop=(width/2, 10), fontsize=30)
-    screen.draw.text('time left: '+str(timer), color='black', midtop=(width/2, 50), fontsize=20)
+    screen.draw.text('time gone: '+str(timer), color='black', midtop=(width/2, 50), fontsize=20)
 
     if game_over:
         screen.fill('black')
         screen.draw.text('TIME IS UP! YOUR FINAL SCORE IS: '+str(score), midtop=(width/2, 10), fontsize=50, color='red')
-    timer=timer+0.016666
+
+    frame+=1\
+
+    if frame == 60:
+        timer+=1
+        frame=0
 
 clock.schedule(time_up, 60.0)
 
