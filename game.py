@@ -1,66 +1,132 @@
 import pgzrun
-from random import randint
+import random
 
-width=600
-height=500
-score=0
-game_over=False
+r = random.randint(1, 255)
+g = random.randint(1, 255)
+b = random.randint(1, 255)
 
-bee=Actor('bee')
-bee.pos=200, 200
-flower=Actor("flower")
-flower.pos=100, 100
+WIDTH = 626
+HEIGHT = 352
+game_over = False
 
-frame=0
+player = Actor("actor")
+player.pos = 50, 50
+
+thing1 = Actor("lava")
+thing1.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+thing1_speed = 2
+
+thing2 = Actor("lava")
+thing2.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+thing2_speed = 2
+
+thing3 = Actor("lava")
+thing3.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+thing3_speed = 2
+
+thing4 = Actor("lava")
+thing4.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+thing4_speed = 2
+
+thing5 = Actor("lava")
+thing5.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+thing5_speed=2
+
+finish=Actor("finish")
+finish.pos=615, 345
+
 
 def update():
-    global score
+    global thing1_speed, thing2_speed, thing3_speed, thing4_speed, thing5_speed
 
     if keyboard.left:
-        bee.x=bee.x-1
-
+        player.x-=2
     elif keyboard.right:
-        bee.x=bee.x+1
-
-    elif keyboard.up:
-        bee.y=bee.y-1
-
+        player.x+=2
     elif keyboard.down:
-        bee.y=bee.y+1
+        player.y+=2
+    elif keyboard.up:
+        player.y-=2
 
-    flower_collected=bee.colliderect(flower)
-    if flower_collected:
-        score=score+1
-        place_flower()
+    thing1.y += thing1_speed
 
-def place_flower():
-    flower.x=randint(70, height-50)
-    flower.y=randint(70, height-50)
+    if thing1.y >= HEIGHT:
+        thing1.y = HEIGHT
+        thing1_speed = -thing1_speed
 
-timer=0
+    if thing1.y <= 0:
+        thing1.y = 0
+        thing1_speed = -thing1_speed
 
-def time_up():
-    global game_over
-    game_over = True
+    thing2.y += thing2_speed
+
+    if thing2.y >= HEIGHT:
+        thing2.y = HEIGHT
+        thing2_speed = -thing2_speed
+
+    if thing2.y <= 0:
+        thing2.y = 0
+        thing2_speed = -thing2_speed
+
+    thing3.y += thing3_speed
+
+    if thing3.y >= HEIGHT:
+        thing3.y = HEIGHT
+        thing3_speed = -thing3_speed
+
+    if thing3.y <= 0:
+        thing3.y = 0
+        thing3_speed = -thing3_speed
+
+    thing4.y += thing4_speed
+
+    if thing4.y >= HEIGHT:
+        thing4.y = HEIGHT
+        thing4_speed = -thing4_speed
+
+    if thing4.y <= 0:
+        thing4.y = 0
+        thing4_speed = -thing4_speed
+
+
+    thing5.y += thing5_speed
+
+    if thing5.y >= HEIGHT:
+        thing5.y = HEIGHT
+        thing5_speed = -thing5_speed
+
+    if thing5.y <= 0:
+        thing5.y = 0
+        thing5_speed = -thing5_speed
 
 def draw():
-    global frame,timer
-    screen.blit('background', (0,0))
-    flower.draw()
-    bee.draw()
-    screen.draw.text('SCORE: '+str(score), color="black", midtop=(width/2, 10), fontsize=30)
-    screen.draw.text('time gone: '+str(timer), color='black', midtop=(width/2, 50), fontsize=20)
+    global game_over, r, g, b
+    screen.blit("background", (0, 0))
+    player.draw()
+    thing1.draw()
+    thing2.draw()
+    thing3.draw()
+    thing4.draw()
+    thing5.draw()
+    finish.draw()
+
+    finished=player.colliderect(finish)
+
+    if finished:
+        game_over=True
 
     if game_over:
-        screen.fill('black')
-        screen.draw.text('TIME IS UP! YOUR FINAL SCORE IS: '+str(score), midtop=(width/2, 10), fontsize=50, color='red')
+        screen.fill((r, g, b))
+        screen.draw.text("CONGRADULATIONS!!!", fontsize=30, color="black", midtop=(WIDTH/2, 10))
 
-    frame+=1\
+    hit_lava1=player.colliderect(thing1)
+    hit_lava2=player.colliderect(thing2)
+    hit_lava3=player.colliderect(thing3)
+    hit_lava4=player.colliderect(thing4)
+    hit_lava5=player.colliderect(thing5)
 
-    if frame == 60:
-        timer+=1
-        frame=0
+    if hit_lava1 or hit_lava2 or hit_lava3 or hit_lava3 or hit_lava4 or hit_lava5:
+        player.pos=50, 50
 
-clock.schedule(time_up, 60.0)
 
 pgzrun.go()
