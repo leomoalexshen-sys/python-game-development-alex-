@@ -5,6 +5,8 @@ r = random.randint(1, 255)
 g = random.randint(1, 255)
 b = random.randint(1, 255)
 
+health=20
+
 WIDTH = 626
 HEIGHT = 352
 game_over = False
@@ -12,17 +14,19 @@ game_over = False
 player = Actor("actor")
 player.pos = 50, 50
 
+debug_timer=60
+
 thing1 = Actor("lava")
 thing1.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
-thing1_speed = 2
+thing1_speed = 5
 
 thing2 = Actor("lava")
 thing2.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
-thing2_speed = 2
+thing2_speed = 3
 
 thing3 = Actor("lava")
 thing3.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
-thing3_speed = 2
+thing3_speed = 1
 
 thing4 = Actor("lava")
 thing4.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
@@ -30,14 +34,19 @@ thing4_speed = 2
 
 thing5 = Actor("lava")
 thing5.pos = random.randint(0, WIDTH), random.randint(0, HEIGHT)
-thing5_speed=2
+thing5_speed=4
 
-finish=Actor("finish")
-finish.pos=615, 345
-
+finishing=Actor("finish")
+finishing.pos=615, 345
 
 def update():
-    global thing1_speed, thing2_speed, thing3_speed, thing4_speed, thing5_speed
+    global thing1_speed, thing2_speed, thing3_speed, thing4_speed, thing5_speed, debug_timer, health, hit_lava1, hit_lava2, hit_lava3, hit_lava4, hit_lava5
+
+    hit_lava1 = player.colliderect(thing1)
+    hit_lava2 = player.colliderect(thing2)
+    hit_lava3 = player.colliderect(thing3)
+    hit_lava4 = player.colliderect(thing4)
+    hit_lava5 = player.colliderect(thing5)
 
     if keyboard.left:
         player.x-=2
@@ -99,8 +108,25 @@ def update():
         thing5.y = 0
         thing5_speed = -thing5_speed
 
+    if debug_timer > 0:
+        debug_timer-=1
+    if health == 0:
+        debug_timer = 60
+    if debug_timer == 0:
+        if hit_lava1 or hit_lava2 or hit_lava3 or hit_lava4 or hit_lava5:
+            health-=1
+            player.pos=50, 50
+            debug_timer=60
+
 def draw():
-    global game_over, r, g, b
+    global game_over, r, g, b, health
+
+    hit_lava1 = player.colliderect(thing1)
+    hit_lava2 = player.colliderect(thing2)
+    hit_lava3 = player.colliderect(thing3)
+    hit_lava4 = player.colliderect(thing4)
+    hit_lava5 = player.colliderect(thing5)
+
     screen.blit("background", (0, 0))
     player.draw()
     thing1.draw()
@@ -108,25 +134,31 @@ def draw():
     thing3.draw()
     thing4.draw()
     thing5.draw()
-    finish.draw()
+    finishing.draw()
 
-    finished=player.colliderect(finish)
+    screen.draw.text("Your Health is " + str(health) + " right now", fontsize = 20, color = "black", bottomleft=(10, 342))
+
+    finished=player.colliderect(finishing)
 
     if finished:
-        game_over=True
+        game_over = True
 
     if game_over:
         screen.fill((r, g, b))
-        screen.draw.text("CONGRADULATIONS!!!", fontsize=30, color="black", midtop=(WIDTH/2, 10))
+        screen.draw.text("CONGRATULATIONS!!!", fontsize=30, color="black", midtop = (WIDTH/2, 10))
 
-    hit_lava1=player.colliderect(thing1)
-    hit_lava2=player.colliderect(thing2)
-    hit_lava3=player.colliderect(thing3)
-    hit_lava4=player.colliderect(thing4)
-    hit_lava5=player.colliderect(thing5)
+    if health == 0:
+        screen.fill("black")
+        screen.draw.text("YOU DIED", fontsize=30, color="red", midtop = (WIDTH/2, 10))
+        health=0
 
-    if hit_lava1 or hit_lava2 or hit_lava3 or hit_lava3 or hit_lava4 or hit_lava5:
-        player.pos=50, 50
-
+    if player.y == 0:
+        player.pos = player.x, 0
+    elif player.y == 352:
+        player.pos = player.x, 352
+    elif player.x == 626:
+        player.pos = 626, player.y
+    elif player.x == 0:
+        player.pos = 0, player.y
 
 pgzrun.go()
