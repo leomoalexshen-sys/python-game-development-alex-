@@ -1,0 +1,23 @@
+import pgzrun
+import random
+from time import time
+
+WIDTH = 800
+HEIGHT = 600
+TITLE = "Connecting Satellites"
+
+number_of_satellite = 10
+satellites = []
+lines = []
+next_satellite = 0
+
+start_time = 0
+total_time = 0
+end_time = 0
+
+def create_satellites():
+    global start_time
+    for count in range(0,number_of_satellite):
+        satellite = Actor("Satellite")
+
+        satellite.pos = random.randint(40,WIDTH-40), random.randint(40,WIDTH-40)
