@@ -1,0 +1,49 @@
+import pgzrun
+import random
+from time import time
+
+WIDTH = 800
+HEIGHT = 600
+TITLE = "Connecting Satellites"
+
+number_of_satellite = 10
+satellites = []
+lines = []
+next_satellite = 0
+
+start_time = 0
+total_time = 0
+end_time = 0
+
+def create_satellites():
+    global start_time
+    for count in range(0,number_of_satellite):
+        satellite = Actor("satellite")
+
+        satellite.pos = random.randint(40,WIDTH-40), random.randint(40,HEIGHT-40)
+        satellites.append(satellite)
+
+def draw() :
+    screen.blit("background", (0,0))
+    number = 0
+    for i in satellites:
+        screen.draw.text(str(number),(i.pos[0], i.pos[1]+20))
+        i.draw()
+        number+=1
+    for a in lines:
+        screen.draw.line(a[0],a[1],"white")
+
+def on_mouse_down(pos):
+    global next_satellite,lines
+    if next_satellite < number_of_satellite:
+        if satellites[next_satellite].collidepoint(pos):
+            if next_satellite:
+                lines.append((satellites[next_satellite-1].pos,satellites[next_satellite].pos))
+            next_satellite += 1
+        else:
+            lines = []
+            next_satellite = 0
+
+create_satellites()
+
+pgzrun.go()
