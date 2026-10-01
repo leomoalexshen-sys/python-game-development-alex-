@@ -1,0 +1,29 @@
+# dalist = [2, 2, 12, 5, 2, 42]
+
+# daset = set(dalist)
+# print(daset)
+
+# if 2 in daset:
+#     print("Yes")
+
+# else:
+#     print("No")
+
+# hi = set([2456, 235, 234, 234, 234, 236, 234, 234, 234, 234])
+# hi.add(2466)
+# hi.remove(235)
+# hi.discard(234)
+
+# print(hi)
+
+
+
+
+
+pi = set([3.14, 3.1415, 3.14159, 3.141592, 3.1415926])
+minecraft = set([3.1415926, "Alex", "Creeper", "Zombie", "Skeleton", "Enderman"])
+
+print(pi | minecraft)
+print(pi & minecraft)
+print(pi - minecraft)
+print(pi ^ minecraft)
