@@ -1,0 +1,37 @@
+import pgzrun
+import random
+
+WIDTH = 634
+HEIGHT = 360
+
+chinchilla = Actor("CHINCHILLA!!!")
+
+
+cat = Actor("cat")
+
+
+dog = Actor("dog")
+
+
+guinea_pig = Actor("guinea_pig")
+
+
+horse = Actor("horse")
+
+
+pigs = Actor("pigs")
+
+
+pets = [cat, dog, guinea_pig, horse, pigs]
+
+def draw():
+    screen.blit("background", (0, 0))
+    screen.draw.text("CLICK THE CHINCHILLA!!!!!!!!!!!!!!!!", (30, 30), fontsize=30, color="white")
+    
+def randomizer (animals):
+    global pets
+    the_choice = random.choice(pets)
+    
+
+
+pgzrun.go()
