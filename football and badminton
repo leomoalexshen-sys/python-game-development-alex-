@@ -1,0 +1,6 @@
+badminton = set(["James", "Tim", "Mary", "Tom", "Bob"])
+football = set(["John", "Mary", "Steve", "Luna", "Jane", "Tom"])
+
+print(badminton & football) 
+print(badminton ^ football)
+print(badminton - football) 
