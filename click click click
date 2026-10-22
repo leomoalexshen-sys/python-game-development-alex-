@@ -1,0 +1,89 @@
+import pgzrun
+import random
+
+WIDTH =1500
+HEIGHT = 750
+
+num_of_animals = [ ]
+
+animations = []
+
+
+
+chinchilla = Actor("chinchilla")
+
+
+cat = Actor("cat")
+
+
+dog = Actor("dog")
+
+
+guinea_pig = Actor("guinea_pig")
+
+
+horse = Actor("horse")
+
+
+pigs = Actor("pigs")
+
+
+button = Actor("button")
+button.pos = 100, 300
+
+
+pets = ["cat", "dog", "guinea_pig", "horse", "pigs"]
+
+level = 1
+total_levels = 5
+
+def randomizer (animals):
+    global pets
+    the_choice = random.choice(pets)
+
+def on_mouse_down(pos):
+    global button, pets, animations, mouse_pos
+    mouse_pos = pos
+    if button.collidepoint(pos):
+        randomizer(pets)
+        rolling_down(pets)
+        button.pos = 9999, 9999
+
+def rolling_down(items_to_roll):
+    global animations, pets, WIDTH, HEIGHT
+    for i in items_to_roll:
+        animation = animate(i, duration = 2, y = HEIGHT)
+        animations.append(animation)
+
+def draw():
+    global button
+    screen.blit("background", (0, 0))
+    screen.draw.text("CLICK THE CHINCHILLA!!!!!!!!!!!!!!!!", (75, 75), fontsize=100, color="white")
+    button.draw()
+    for a in pets:
+        a.draw()
+
+def update():
+    global num_of_animals
+    if len(num_of_animals) == 0:
+        num_of_animals = make_animals(level)
+
+def make_animals(extra):
+    pets_to_create = select(extra)
+    new_pets = create_animals(pets_to_create)
+    return new_pets
+
+def select(extra):
+    pets_to_create = [chinchilla]
+    for b in range(extra):
+        pets_to_create.append(random.choice(pets))
+    return pets_to_create
+
+def create_animals(pets_to_make):
+    new_pets = []
+    for c in pets_to_make:
+        new_pet = Actor(c)
+        new_pets.append(new_pet)
+    return new_pets
+
+pgzrun.go()
